@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Confirm Sale</h2>
+  <p>Sale Details:</p>
+  <p>Product: {{ sale.product.name }}</p>
+  <p>Quantity Sold: {{ sale.quantity_sold }}</p>
+  <p>Date Sold: {{ sale.date_sold }}</p>
+
+  <h3>Invoice Details:</h3>
+  <p>Invoice Number: {{ invoice.invoice_number }}</p>
+  <p>Total Amount: {{ invoice.total_amount }}</p>
+  <p>Date Created: {{ invoice.date_created }}</p>
+
+  <!-- Additional content or actions -->
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Cart</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_items %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity_sold }}</td>
+          <td>₦ {{ item.product.price }}</td>
+          <td>₦ {{ item.quantity_sold|mul:item.product.price }}</td>
+          <td>
+            <a href="{% url 'remove_from_cart' item.id %}">Remove</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">Your cart is empty.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p>Total Amount: ₦ {{ total_amount }}</p>
+  <a href="{% url 'checkout' %}" class="btn btn-primary">Checkout</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Remove Item</h2>
+  <p>Are you sure you want to remove the following item from your cart?</p>
+  <p>Product: {{ cart_item.product.name }}</p>
+  <p>Quantity: {{ cart_item.quantity_sold }}</p>
+  <p>Price: ₦ {{ cart_item.product.price }}</p>
+  <p>Subtotal: ₦ {{ cart_item.quantity_sold|mul:cart_item.product.price }}</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Confirm</button>
+    <a href="{% url 'cart' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

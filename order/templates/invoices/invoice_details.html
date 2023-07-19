@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Invoice Details</h2>
+  <p>Invoice Number: {{ invoice.invoice_number }}</p>
+  <p>Total Amount: {{ invoice.total_amount }}</p>
+  <p>Date Created: {{ invoice.date_created }}</p>
+
+  <h3>Sale Details:</h3>
+  <p>Customer Name: {{ invoice.sale.customer_name }}</p>
+  <p>Date Sold: {{ invoice.sale.date_sold }}</p>
+
+  <h3>Sale Items:</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity Sold</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sale_item in sale_items %}
+        <tr>
+          <td>{{ sale_item.product.name }}</td>
+          <td>{{ sale_item.quantity_sold }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="2">No sale items available.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

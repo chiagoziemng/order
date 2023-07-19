@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Invoice List</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Invoice Number</th>
+        <th>Total Amount</th>
+        <th>Date Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for invoice in invoices %}
+        <tr>
+          <td>{{ invoice.invoice_number }}</td>
+          <td>{{ invoice.total_amount }}</td>
+          <td>{{ invoice.date_created }}</td>
+          <td><a href="{% url 'invoice_details' invoice_id=invoice.id %}">View Details</a></td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4">No invoices available.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

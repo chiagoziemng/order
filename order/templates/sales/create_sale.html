@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Create Sale</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ sale_form.as_p }}
+
+    <h3>Sale Items</h3>
+    <table id="sale-item-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart_items %}
+          <tr class="sale-item-row">
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity_sold }}</td>
+            <td><a href="{% url 'remove_cart_item' item.id %}">Remove</a></td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3">No items in cart.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button type="submit">Generate Invoice</button>
+  </form>
+
+  <script>
+    // Submit the form to generate the invoice
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      fetch("{% url 'generate_invoice' %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': "{{ csrf_token }}",
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sale_form: {
+            customer_name: "{{ sale_form.customer_name.value }}",
+          },
+          saleitem_formset: [
+            {% for item in cart_items %}
+              {
+                product: "{{ item.product.id }}",
+                quantity_sold: {{ item.quantity_sold }},
+              },
+            {% endfor %}
+          ],
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = data.redirect;
+        } else {
+          console.error('An error occurred while generating the invoice:', data.error);
+        }
+      })
+      .catch(error => {
+        console.error('An error occurred while submitting the form:', error);
+      });
+    });
+  </script>
+{% endblock %}
